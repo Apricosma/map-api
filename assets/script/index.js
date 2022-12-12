@@ -38,12 +38,10 @@ const getLocation = () => new Promise((resolve, reject) => {
     );
 })
 
-// Assigns a wait time
+// Repeat/delay abstraction
 let wait = ms => new Promise(
     r => setTimeout(r, ms)
 );
-
-// Repeat promise
 let repeat = (ms, func) => new Promise(
     r => (
         setInterval(func, ms),
