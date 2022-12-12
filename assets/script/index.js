@@ -23,16 +23,26 @@ const getLocation = () => new Promise((resolve, reject) => {
             ];
             marker.setLngLat([long, lat]) // sets marker to user location
             console.log([long, lat]);
+            // flies to current coords 
+            // TODO Fix zoom being called repeatedly
+            map.flyTo({
+                center: location,
+                zoom: 11,
+                speed: 1,
+                essential: true
+            })
             resolve(location);
         },
         err => reject(err)
     );
 })
 
+// Assigns a wait time
 let wait = ms => new Promise(
     r => setTimeout(r, ms)
 );
 
+// Repeat promise
 let repeat = (ms, func) => new Promise(
     r => (
         setInterval(func, ms),
@@ -40,21 +50,6 @@ let repeat = (ms, func) => new Promise(
     )
 );
 
+// Repeats.. (seconds, () => Promise.all([functionToRepeat()]))
 repeat(1000, () => Promise.all([getLocation()]))
-    .then(location => map.flyTo({
-        center: location,
-        essential: true
-    }))
-    .then(map.setZoom(11))
-    // .catch(error => console.log('Geolocation encountered an error'));
-
-// getLocation()
-    
-
-// getLocation()
-//     .then(location => map.flyTo({
-//         center: location,
-//         essential: true
-//     }))
-//     .then(map.setZoom(11))
-//     .catch(error => console.log('Geolocation encountered an error'));
+    .catch(error => console.log('Geolocation encountered an error'));
