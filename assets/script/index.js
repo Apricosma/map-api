@@ -4,7 +4,7 @@ const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/apricosma/clbkza42n000m14ofsd3qt653', // style URL
     center: [0, 0], // starting position [lng, lat]
-    zoom: 5,
+    zoom: 15, // zoom doesn't exactly work
     projection: 'globe'
 });
 
@@ -28,7 +28,7 @@ const getLocation = () => new Promise((resolve, reject) => {
             // snap-back
             map.flyTo({
                 center: location,
-                zoom: 11,
+                zoom: 14,
                 speed: 1,
                 essential: true
             })
