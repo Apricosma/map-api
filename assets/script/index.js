@@ -8,8 +8,9 @@ const map = new mapboxgl.Map({
     projection: 'globe'
 });
 
+// create marker
 const marker = new mapboxgl.Marker()
-    .setLngLat([-97.13, 49.89])
+    .setLngLat([-97.13, 49.89]) // default marker position
     .addTo(map);
 
 
@@ -20,58 +21,40 @@ const getLocation = () => new Promise((resolve, reject) => {
                 long = position.coords.longitude,
                 lat = position.coords.latitude 
             ];
-            marker.setLngLat([long, lat])
+            marker.setLngLat([long, lat]) // sets marker to user location
+            console.log([long, lat]);
             resolve(location);
         },
         err => reject(err)
     );
 })
 
-getLocation()
+let wait = ms => new Promise(
+    r => setTimeout(r, ms)
+);
+
+let repeat = (ms, func) => new Promise(
+    r => (
+        setInterval(func, ms),
+        wait(ms).then(r)
+    )
+);
+
+repeat(1000, () => Promise.all([getLocation()]))
     .then(location => map.flyTo({
         center: location,
         essential: true
     }))
     .then(map.setZoom(11))
-    .catch(error => console.log('Geolocation encountered an error'));
+    // .catch(error => console.log('Geolocation encountered an error'));
 
-// function getLocation(position) {
-//     const { latitude, longitude } = position.coords; 
-//     console.log([longitude, latitude]);
-//     userPosition = [longitude, latitude];
-//     return userPosition;
-// }
+// getLocation()
+    
 
-// // getCurrentPosition() passes a 'PositionError' object to its 'failure' callback
-// function errorHandler(error) {
-//     console.log(error.message);
-// }
-
-// if (navigator.geolocation) {
-//     navigator.geolocation.getCurrentPosition(
-//         getLocation,
-//         errorHandler,
-//         { enableHighAccuracy: true }
-//     );
-// } else {
-//     console.log('Geolocation is not supported by your browser');
-// }
-
-
-// const geolocate = new mapboxgl.GeolocateControl({
-//     positionOptions: {
-//         enableHighAccuracy: true
-//     },
-//     trackUserLocation: true,
-//     showUserHeading: true
-// })
-
-// map.addControl(geolocate)
-
-// geolocate.on('error', () => {
-//     console.log(`Geolocation has encountered an error`);
-// })
-
-// map.on('load', () => {
-//     geolocate.trigger()
-// })
+// getLocation()
+//     .then(location => map.flyTo({
+//         center: location,
+//         essential: true
+//     }))
+//     .then(map.setZoom(11))
+//     .catch(error => console.log('Geolocation encountered an error'));
