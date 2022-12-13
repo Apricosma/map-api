@@ -9,3 +9,5 @@ Automatic updating is triggered via promise callback with a combination of `setI
 You may move the map around, but it will snap back to center every time the promise is called. This prevents 'losing' yourself on the map. 
 
 A simple map application like this could be updated to track walking routes or bicycle trips. 
+
+[You can find the application here](https://apricosma.github.io/map-api/)
